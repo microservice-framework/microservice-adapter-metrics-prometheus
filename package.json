@@ -1,0 +1,30 @@
+{
+  "name": "microservice-adapter-metrics-prometheus",
+  "version": "1.0.0",
+  "description": "Convert metrics output to prometheus data",
+  "main": "microservice-adapter-metrics-prometheus.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha  --timeout 15000",
+    "start": "DEBUG=http:log,cluster:* node  --max-old-space-size=128 microservice-adapter-metrics-prometheus.js",
+    "stop": "node kill.js",
+    "status": "node status.js",
+    "cs": "eslint --fix *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microservice-framework/microservice-adapter-metrics-prometheus.git"
+  },
+  "author": "Gormartsen",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/microservice-framework/microservice-adapter-metrics-prometheus/issues"
+  },
+  "homepage": "https://github.com/microservice-framework/microservice-adapter-metrics-prometheus#readme",
+  "dependencies": {
+    "@microservice-framework/microservice": "^1.3.8",
+    "@microservice-framework/microservice-cluster": "github:microservice-framework/microservice-cluster#2.x",
+    "@microservice-framework/microservice-router-register": "^1.3.1",
+    "debug": "^4.1.1",
+    "dotenv": "^6.2.0"
+  }
+}
