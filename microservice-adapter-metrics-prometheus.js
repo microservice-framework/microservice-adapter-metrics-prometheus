@@ -118,5 +118,5 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
     }
   }
 
-  callback(null, {code: 200, answer: answer, headers: {'content-type': 'text/plain'}})
+  callback(null, {code: 200, answer: answer, headers: {'x-set-content-type': 'text/plain'}})
 }
