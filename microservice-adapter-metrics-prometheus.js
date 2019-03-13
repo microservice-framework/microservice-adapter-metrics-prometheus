@@ -100,20 +100,59 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
   } catch (e) {
     return callback(e, null);
   }
-  
-  let metricName = 'mfwapi_requests_total'
-  let answer = '#HELP ' + metricName + ' The total numbers of mfwapi requests' + "\n"
-  answer += '#TYPE ' + metricName + ' counter' + "\n"
+  let answer = ''
+  let metricNameTotal = 'mfwapi_requests_total'
+  answer += '#HELP ' + metricNameTotal + ' The total numbers of mfwapi requests' + "\n"
+  answer += '#TYPE ' + metricNameTotal + ' counter' + "\n"
   for (let name in jsonData) {
     for (let method in jsonData[name].methods) {
       for (let code in jsonData[name].methods[method]) {
-        let count = jsonData[name].methods[method][code]
-        let statLine = metricName + '{'
+        let stats = jsonData[name].methods[method][code]
+        let statLine = metricNameTotal + '{'
           + ',path="' + name + '"'
           + ',method="' + method + '"'
           + ',code="' + code + '"'
-          + '} ' + count + "\n";
+          + '} ' + stats.counter + "\n";
         answer += statLine
+      }
+    }
+  }
+
+  let metricNameDruation = 'mfwapi_requests_duration'
+  answer += '#HELP ' + metricNameDruation + ' The duration of mfwapi requests' + "\n"
+  answer += '#TYPE ' + metricNameDruation + ' counter' + "\n"
+  for (let name in jsonData) {
+    for (let method in jsonData[name].methods) {
+      for (let code in jsonData[name].methods[method]) {
+        let stats = jsonData[name].methods[method][code]
+        let statLineMin = metricNameDruation + '{'
+          + ',path="' + name + '"'
+          + ',method="' + method + '"'
+          + ',code="' + code + '"'
+          + ',type="min"'
+          + '} ' + stats.time.min + "\n";
+        answer += statLineMin
+        let statLineMax = metricNameDruation + '{'
+          + ',path="' + name + '"'
+          + ',method="' + method + '"'
+          + ',code="' + code + '"'
+          + ',type="max"'
+          + '} ' + stats.time.max + "\n";
+        answer += statLineMax
+        let statLineTotal = metricNameDruation + '{'
+          + ',path="' + name + '"'
+          + ',method="' + method + '"'
+          + ',code="' + code + '"'
+          + ',type="total"'
+          + '} ' + stats.time.total + "\n";
+        answer += statLineTotal
+        let statLineAVG = metricNameDruation + '{'
+          + ',path="' + name + '"'
+          + ',method="' + method + '"'
+          + ',code="' + code + '"'
+          + ',type="avg"'
+          + '} ' + (stats.time.total / stats.counter) + "\n";
+        answer += statLineAVG
       }
     }
   }
