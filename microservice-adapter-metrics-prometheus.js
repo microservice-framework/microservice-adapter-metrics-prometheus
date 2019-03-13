@@ -108,12 +108,22 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
     for (let method in jsonData[name].methods) {
       for (let code in jsonData[name].methods[method]) {
         let stats = jsonData[name].methods[method][code]
+        if(!stats.counter) {
+          let statLine = metricNameTotal + '{'
+          + ',path="' + name + '"'
+          + ',method="' + method + '"'
+          + ',code="' + code + '"'
+          + '} ' + stats + "\n";
+          answer += statLine
+          continue
+        }
         let statLine = metricNameTotal + '{'
           + ',path="' + name + '"'
           + ',method="' + method + '"'
           + ',code="' + code + '"'
           + '} ' + stats.counter + "\n";
         answer += statLine
+
       }
     }
   }
@@ -125,34 +135,47 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
     for (let method in jsonData[name].methods) {
       for (let code in jsonData[name].methods[method]) {
         let stats = jsonData[name].methods[method][code]
-        let statLineMin = metricNameDruation + '{'
-          + ',path="' + name + '"'
-          + ',method="' + method + '"'
-          + ',code="' + code + '"'
-          + ',type="min"'
-          + '} ' + stats.time.min + "\n";
-        answer += statLineMin
-        let statLineMax = metricNameDruation + '{'
-          + ',path="' + name + '"'
-          + ',method="' + method + '"'
-          + ',code="' + code + '"'
-          + ',type="max"'
-          + '} ' + stats.time.max + "\n";
-        answer += statLineMax
-        let statLineTotal = metricNameDruation + '{'
-          + ',path="' + name + '"'
-          + ',method="' + method + '"'
-          + ',code="' + code + '"'
-          + ',type="total"'
-          + '} ' + stats.time.total + "\n";
-        answer += statLineTotal
-        let statLineAVG = metricNameDruation + '{'
-          + ',path="' + name + '"'
-          + ',method="' + method + '"'
-          + ',code="' + code + '"'
-          + ',type="avg"'
-          + '} ' + (stats.time.total / stats.counter) + "\n";
-        answer += statLineAVG
+        if(typeof stats == "number") {
+          continue
+        }
+        if(stats.time) {
+          if(stats.time.min) {
+            let statLineMin = metricNameDruation + '{'
+              + ',path="' + name + '"'
+              + ',method="' + method + '"'
+              + ',code="' + code + '"'
+              + ',type="min"'
+              + '} ' + stats.time.min + "\n";
+            answer += statLineMin
+          }
+          if(stats.time.max) {
+            let statLineMax = metricNameDruation + '{'
+              + ',path="' + name + '"'
+              + ',method="' + method + '"'
+              + ',code="' + code + '"'
+              + ',type="max"'
+              + '} ' + stats.time.max + "\n";
+            answer += statLineMax
+          }
+          if(stats.time.total) {
+            let statLineTotal = metricNameDruation + '{'
+              + ',path="' + name + '"'
+              + ',method="' + method + '"'
+              + ',code="' + code + '"'
+              + ',type="total"'
+              + '} ' + stats.time.total + "\n";
+            answer += statLineTotal
+          }
+          if(stats.time.total && stats.counter) {
+            let statLineAVG = metricNameDruation + '{'
+              + ',path="' + name + '"'
+              + ',method="' + method + '"'
+              + ',code="' + code + '"'
+              + ',type="avg"'
+              + '} ' + (stats.time.total / stats.counter) + "\n";
+            answer += statLineAVG
+          }
+        }
       }
     }
   }
