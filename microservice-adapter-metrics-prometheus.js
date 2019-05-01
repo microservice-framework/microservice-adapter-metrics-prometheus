@@ -110,7 +110,7 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
         let stats = jsonData[name].methods[method][code]
         if(!stats.counter) {
           let statLine = metricNameTotal + '{'
-          + ',path="' + name + '"'
+          + 'path="' + name + '"'
           + ',method="' + method + '"'
           + ',code="' + code + '"'
           + '} ' + stats + "\n";
@@ -118,7 +118,7 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
           continue
         }
         let statLine = metricNameTotal + '{'
-          + ',path="' + name + '"'
+          + 'path="' + name + '"'
           + ',method="' + method + '"'
           + ',code="' + code + '"'
           + '} ' + stats.counter + "\n";
@@ -141,7 +141,7 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
         if(stats.time) {
           if(stats.time.min) {
             let statLineMin = metricNameDruation + '{'
-              + ',path="' + name + '"'
+              + 'path="' + name + '"'
               + ',method="' + method + '"'
               + ',code="' + code + '"'
               + ',type="min"'
@@ -150,7 +150,7 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
           }
           if(stats.time.max) {
             let statLineMax = metricNameDruation + '{'
-              + ',path="' + name + '"'
+              + 'path="' + name + '"'
               + ',method="' + method + '"'
               + ',code="' + code + '"'
               + ',type="max"'
@@ -159,7 +159,7 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
           }
           if(stats.time.total) {
             let statLineTotal = metricNameDruation + '{'
-              + ',path="' + name + '"'
+              + 'path="' + name + '"'
               + ',method="' + method + '"'
               + ',code="' + code + '"'
               + ',type="total"'
@@ -168,7 +168,7 @@ function hookNOTIFY(jsonData, requestDetails, callback) {
           }
           if(stats.time.total && stats.counter) {
             let statLineAVG = metricNameDruation + '{'
-              + ',path="' + name + '"'
+              + 'path="' + name + '"'
               + ',method="' + method + '"'
               + ',code="' + code + '"'
               + ',type="avg"'
